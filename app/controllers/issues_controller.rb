@@ -1,12 +1,6 @@
 class IssuesController < ApplicationController
   before_action :set_issue, only: [:edit, :update, :destroy]
 
-  # GET /issues
-  # GET /issues.json
-  def index
-    @issues = Issue.all
-  end
-
   # GET /issues/new
   def new
     @issue = Issue.new
@@ -23,8 +17,8 @@ class IssuesController < ApplicationController
 
     respond_to do |format|
       if @issue.save
-        format.html { redirect_to issues_url, notice: 'Issue was successfully created.' }
-        format.json { render :index, status: :created, location: issues_url }
+        format.html { redirect_to root_path, notice: 'Issue was successfully created.' }
+        format.json { render :index, status: :created, location: root_path }
       else
         format.html { render :new }
         format.json { render json: @issue.errors, status: :unprocessable_entity }
@@ -37,8 +31,8 @@ class IssuesController < ApplicationController
   def update
     respond_to do |format|
       if @issue.update(issue_params)
-        format.html { redirect_to issues_url, notice: 'Issue was successfully updated.' }
-        format.json { render :index, status: :ok, location: issues_url }
+        format.html { redirect_to root_path, notice: 'Issue was successfully updated.' }
+        format.json { render :index, status: :ok, location: root_path }
       else
         format.html { render :edit }
         format.json { render json: @issue.errors, status: :unprocessable_entity }
