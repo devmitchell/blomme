@@ -7,15 +7,17 @@
     %tr
       %th Issue
       %th Acknowledged
+      %th Priority Level
       %th Votes
       %th
       %th
 
   %tbody
     - @issues.each do |issue|
-      %tr
+      %tr{class: class_for_priority(priority: issue.priority)}
         %td= issue.statement
         %td= issue.acknowledged
+        %td= issue.priority
         %td= issue.votes
         %td= link_to 'Edit', edit_issue_path(issue)
         %td= link_to 'Destroy', issue, :method => :delete, :data => { :confirm => 'Are you sure?' }

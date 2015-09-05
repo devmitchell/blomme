@@ -10,6 +10,9 @@
     = f.label :statement
     = f.text_field :statement, class: 'form-control'
   .form-group
+    = f.label :priority
+    = f.select :priority, @issue.class::PRIORITY_LEVELS, class: 'form-control'
+  .form-group
     = f.label :acknowledged
     = f.check_box :acknowledged, class: 'form-control'
   .actions

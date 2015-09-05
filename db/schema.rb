@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20150905014837) do
   create_table "issues", force: :cascade do |t|
     t.string   "statement"
     t.boolean  "acknowledged"
+    t.string   "priority"
     t.integer  "votes",        default: 0, null: false
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
