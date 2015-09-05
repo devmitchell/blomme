@@ -17,13 +17,19 @@ ActiveRecord::Schema.define(version: 20150905034024) do
   enable_extension "plpgsql"
 
   create_table "issues", force: :cascade do |t|
+    t.integer  "owner_id"
+    t.integer  "closer_id"
     t.string   "statement"
-    t.boolean  "acknowledged"
     t.string   "priority"
     t.integer  "votes",        default: 0, null: false
+    t.boolean  "acknowledged"
+    t.boolean  "closed"
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
   end
+
+  add_index "issues", ["closer_id"], name: "index_issues_on_closer_id", using: :btree
+  add_index "issues", ["owner_id"], name: "index_issues_on_owner_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false

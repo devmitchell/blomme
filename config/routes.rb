@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
-  devise_for :users
-  resources :issues, except: [:index, :show]
   root 'home#index'
+  devise_for :users
+  resources :issues, except: [:index, :show, :destroy] do
+    post :close, on: :member
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

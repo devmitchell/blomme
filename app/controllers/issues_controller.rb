@@ -1,6 +1,7 @@
 class IssuesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_issue, only: [:edit, :update, :destroy]
+  before_action :set_issue, only: [:edit, :update, :close]
+  before_action :prevent_unauthorized_user, only: [:edit, :update, :close]
 
   # GET /issues/new
   def new
@@ -14,7 +15,7 @@ class IssuesController < ApplicationController
   # POST /issues
   # POST /issues.json
   def create
-    @issue = Issue.new(issue_params)
+    @issue = Issue.new(issue_params.merge(owner: current_user))
 
     respond_to do |format|
       if @issue.save
@@ -41,13 +42,17 @@ class IssuesController < ApplicationController
     end
   end
 
-  # DELETE /issues/1
-  # DELETE /issues/1.json
-  def destroy
-    @issue.destroy
+  # POST /issues/1/close
+  # POST /issues/1/close.json
+  def close
     respond_to do |format|
-      format.html { redirect_to root_path, notice: 'Issue was successfully destroyed.' }
-      format.json { head :no_content }
+      if @issue.update closer: current_user
+        format.html { redirect_to root_path, notice: 'Issue was successfully closed.' }
+        format.json { render :index, status: :ok, location: root_path }
+      else
+        format.html { render :edit }
+        format.json { render json: @issue.errors, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -60,5 +65,12 @@ class IssuesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def issue_params
       params.require(:issue).permit(:statement, :priority, :acknowledged, :votes)
+    end
+
+    # Renders a 403 if the user interacting with the issue is not authorized to do so.
+    def prevent_unauthorized_user
+      unless current_user.can_manage_issue? @issue
+        render status: :forbidden, nothing: true
+      end
     end
 end

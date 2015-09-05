@@ -1,5 +1,6 @@
 class HomeController < ApplicationController
   def index
-    @issues = Issue.all
+    @open_issues = Issue.opened
+    @closed_issues = Issue.closed
   end
 end

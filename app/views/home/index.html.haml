@@ -1,26 +1,51 @@
 %h1 Reported Issues
 
+%h2 Open Issues
+
 %table.table.table-striped
   %thead
     %tr
       %th Issue
       %th Acknowledged
       %th Priority Level
+      %th Reported By
       %th Votes
       - if user_signed_in?
         %th
         %th
 
   %tbody
-    - @issues.each do |issue|
+    - @open_issues.each do |issue|
       %tr{class: class_for_priority(priority: issue.priority)}
         %td= issue.statement
         %td= issue.acknowledged
         %td= issue.priority
+        %td= issue.owner.andand.email
         %td= issue.votes
-        - if user_signed_in?
+        - if user_signed_in? && current_user.can_manage_issue?(issue)
           %td= link_to 'Edit', edit_issue_path(issue)
-          %td= link_to 'Destroy', issue, method: :delete, data: { confirm: 'Are you sure?' }
+          %td= link_to 'Close', close_issue_path(issue), method: :post, data: { confirm: 'Are you sure?' }
+        - else
+          %td
+          %td
+
+%h2 Closed Issues
+
+%table.table.table-striped
+  %thead
+    %tr
+      %th Issue
+      %th Acknowledged
+      %th Priority Level
+      %th Closed By
+
+  %tbody
+    - @closed_issues.each do |issue|
+      %tr{class: class_for_priority(priority: issue.priority)}
+        %td= issue.statement
+        %td= issue.acknowledged
+        %td= issue.priority
+        %td= issue.closer.andand.email
 
 %br
 
