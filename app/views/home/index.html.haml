@@ -7,8 +7,9 @@
       %th Acknowledged
       %th Priority Level
       %th Votes
-      %th
-      %th
+      - if user_signed_in?
+        %th
+        %th
 
   %tbody
     - @issues.each do |issue|
@@ -17,9 +18,11 @@
         %td= issue.acknowledged
         %td= issue.priority
         %td= issue.votes
-        %td= link_to 'Edit', edit_issue_path(issue)
-        %td= link_to 'Destroy', issue, :method => :delete, :data => { :confirm => 'Are you sure?' }
+        - if user_signed_in?
+          %td= link_to 'Edit', edit_issue_path(issue)
+          %td= link_to 'Destroy', issue, method: :delete, data: { confirm: 'Are you sure?' }
 
 %br
 
-= link_to 'New Issue', new_issue_path
+- if user_signed_in?
+  = link_to 'New Issue', new_issue_path
