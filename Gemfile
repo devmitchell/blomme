@@ -28,6 +28,7 @@ gem 'rails_12factor', group: :production
 gem 'haml-rails', '~> 0.9.0'
 gem 'bootstrap-sass', '~> 3.3.5'
 gem 'yaml_db', '~> 0.3.0'
+gem 'devise', '~> 3.5.2'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

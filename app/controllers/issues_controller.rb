@@ -1,4 +1,5 @@
 class IssuesController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_issue, only: [:edit, :update, :destroy]
 
   # GET /issues/new
