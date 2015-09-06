@@ -30,6 +30,7 @@ gem 'bootstrap-sass', '~> 3.3.5'
 gem 'yaml_db', '~> 0.3.0'
 gem 'devise', '~> 3.5.2'
 gem 'andand', '~> 1.3.3'
+gem 'rails_admin', '~> 0.7.0'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

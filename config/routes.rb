@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   root 'home#index'
   devise_for :users
+  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
+
   resources :issues, except: [:index, :show, :destroy] do
     post :close, on: :member
   end
