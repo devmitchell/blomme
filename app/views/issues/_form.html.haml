@@ -12,8 +12,6 @@
   .form-group
     = f.label :priority
     = f.select :priority, @issue.class::PRIORITY_LEVELS, class: 'form-control'
-  .form-group
-    = f.label :acknowledged
-    = f.check_box :acknowledged, class: 'form-control'
+
   .actions
     = f.submit 'Save', class: 'btn btn-default'

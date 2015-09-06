@@ -22,6 +22,12 @@
         %td= issue.priority
         %td= issue.owner.andand.email
         %td= issue.votes
+
+        - if user_signed_in? && current_user.can_acknowledge_issue?(issue) && !issue.acknowledged?
+          %td= link_to 'Acknowledge', acknowledge_issue_path(issue), method: :post
+        - else
+          %td
+
         - if user_signed_in? && current_user.can_manage_issue?(issue)
           %td= link_to 'Edit', edit_issue_path(issue)
           %td= link_to 'Close', close_issue_path(issue), method: :post, data: { confirm: 'Are you sure?' }

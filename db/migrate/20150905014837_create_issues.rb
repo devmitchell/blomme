@@ -6,8 +6,8 @@ class CreateIssues < ActiveRecord::Migration
       t.string :statement
       t.string :priority
       t.integer :votes, null: false, default: 0
-      t.boolean :acknowledged
-      t.boolean :closed
+      t.boolean :acknowledged, default: false
+      t.boolean :closed, default: false
 
       t.timestamps null: false
     end

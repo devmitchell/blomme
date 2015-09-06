@@ -1,7 +1,8 @@
 class IssuesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_issue, only: [:edit, :update, :close]
-  before_action :prevent_unauthorized_user, only: [:edit, :update, :close]
+  before_action :set_issue, only: [:edit, :update, :acknowledge, :close]
+  before_action :prevent_unauthorized_acknowledgement, only: [:acknowledge]
+  before_action :prevent_unauthorized_managing, only: [:edit, :update, :close]
 
   # GET /issues/new
   def new
@@ -42,6 +43,20 @@ class IssuesController < ApplicationController
     end
   end
 
+  # POST /issues/1/acknowledge
+  # POST /issues/1/acknowledge.json
+  def acknowledge
+    respond_to do |format|
+      if @issue.update acknowledged: true
+        format.html { redirect_to root_path, notice: 'Issue was successfully closed.' }
+        format.json { render :index, status: :ok, location: root_path }
+      else
+        format.html { render :edit }
+        format.json { render json: @issue.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   # POST /issues/1/close
   # POST /issues/1/close.json
   def close
@@ -64,11 +79,18 @@ class IssuesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def issue_params
-      params.require(:issue).permit(:statement, :priority, :acknowledged, :votes)
+      params.require(:issue).permit(:statement, :priority, :votes)
     end
 
-    # Renders a 403 if the user interacting with the issue is not authorized to do so.
-    def prevent_unauthorized_user
+    # Renders a 403 if the user acknowledging the issue is not authorized to do so.
+    def prevent_unauthorized_acknowledgement
+      unless current_user.can_acknowledge_issue? @issue
+        render status: :forbidden, nothing: true
+      end
+    end
+
+    # Renders a 403 if the user managing the issue is not authorized to do so.
+    def prevent_unauthorized_managing
       unless current_user.can_manage_issue? @issue
         render status: :forbidden, nothing: true
       end

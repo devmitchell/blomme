@@ -21,11 +21,11 @@ ActiveRecord::Schema.define(version: 20150906002132) do
     t.integer  "closer_id"
     t.string   "statement"
     t.string   "priority"
-    t.integer  "votes",        default: 0, null: false
-    t.boolean  "acknowledged"
-    t.boolean  "closed"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.integer  "votes",        default: 0,     null: false
+    t.boolean  "acknowledged", default: false
+    t.boolean  "closed",       default: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
   end
 
   add_index "issues", ["closer_id"], name: "index_issues_on_closer_id", using: :btree
