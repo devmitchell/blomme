@@ -4,7 +4,7 @@ class CreateIssues < ActiveRecord::Migration
       t.belongs_to :owner, index: true
       t.belongs_to :closer, index: true
       t.string :statement
-      t.string :priority
+      t.integer :priority, null: false
       t.boolean :acknowledged, default: false
       t.boolean :closed, default: false
 

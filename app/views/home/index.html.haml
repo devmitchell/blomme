@@ -19,7 +19,7 @@
       %tr{class: class_for_priority(priority: issue.priority)}
         %td= issue.statement
         %td= issue.acknowledged
-        %td= issue.priority
+        %td= t("activerecord.attribute_values.issue.priority.#{issue.priority}")
         %td= issue.owner.andand.email
         %td= issue.voters.count
         - if user_signed_in? && !current_user.issues_voted_for.include?(issue)
@@ -54,7 +54,7 @@
       %tr{class: class_for_priority(priority: issue.priority)}
         %td= issue.statement
         %td= issue.acknowledged
-        %td= issue.priority
+        %td= t("activerecord.attribute_values.issue.priority.#{issue.priority}")
         %td= issue.closer.andand.email
 
 %br

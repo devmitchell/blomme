@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 20150906012459) do
     t.integer  "owner_id"
     t.integer  "closer_id"
     t.string   "statement"
-    t.string   "priority"
+    t.integer  "priority",                     null: false
     t.boolean  "acknowledged", default: false
     t.boolean  "closed",       default: false
     t.datetime "created_at",                   null: false

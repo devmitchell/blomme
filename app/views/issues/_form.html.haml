@@ -11,7 +11,7 @@
     = f.text_field :statement, class: 'form-control'
   .form-group
     = f.label :priority
-    = f.select :priority, @issue.class::PRIORITY_LEVELS, class: 'form-control'
+    = f.select :priority, options_for_priorities, include_blank: true, class: 'form-control'
 
   .actions
     = f.submit 'Save', class: 'btn btn-default'
