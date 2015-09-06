@@ -10,6 +10,8 @@ class Issue < ActiveRecord::Base
   belongs_to :owner, class_name: 'User'
   belongs_to :closer, class_name: 'User'
 
+  has_and_belongs_to_many :voters, class_name: 'User'
+
   scope :opened, -> { where(closer_id: nil) }
   scope :closed, -> { where.not(closer_id: nil) }
 

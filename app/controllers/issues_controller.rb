@@ -1,6 +1,6 @@
 class IssuesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_issue, only: [:edit, :update, :acknowledge, :close]
+  before_action :set_issue, only: [:edit, :update, :vote, :acknowledge, :close]
   before_action :prevent_unauthorized_acknowledgement, only: [:acknowledge]
   before_action :prevent_unauthorized_managing, only: [:edit, :update, :close]
 
@@ -43,12 +43,27 @@ class IssuesController < ApplicationController
     end
   end
 
+  # POST /issues/1/vote
+  # POST /issues/1/vote.json
+  def vote
+    respond_to do |format|
+      unless @issue.voters.include? current_user
+        @issue.voters << current_user
+        format.html { redirect_to root_path, notice: 'Your vote has been successfully cast.' }
+        format.json { render :index, status: :ok, location: root_path }
+      else
+        format.html { redirect_to root_path, notice: 'Issue cannot be voted for more than once.' }
+        format.json { render status: :forbidden, nothing: true }
+      end
+    end
+  end
+
   # POST /issues/1/acknowledge
   # POST /issues/1/acknowledge.json
   def acknowledge
     respond_to do |format|
       if @issue.update acknowledged: true
-        format.html { redirect_to root_path, notice: 'Issue was successfully closed.' }
+        format.html { redirect_to root_path, notice: 'Issue acknowledged.' }
         format.json { render :index, status: :ok, location: root_path }
       else
         format.html { render :edit }
@@ -79,7 +94,7 @@ class IssuesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def issue_params
-      params.require(:issue).permit(:statement, :priority, :votes)
+      params.require(:issue).permit(:statement, :priority)
     end
 
     # Renders a 403 if the user acknowledging the issue is not authorized to do so.

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150906002132) do
+ActiveRecord::Schema.define(version: 20150906012459) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,7 +21,6 @@ ActiveRecord::Schema.define(version: 20150906002132) do
     t.integer  "closer_id"
     t.string   "statement"
     t.string   "priority"
-    t.integer  "votes",        default: 0,     null: false
     t.boolean  "acknowledged", default: false
     t.boolean  "closed",       default: false
     t.datetime "created_at",                   null: false
@@ -30,6 +29,14 @@ ActiveRecord::Schema.define(version: 20150906002132) do
 
   add_index "issues", ["closer_id"], name: "index_issues_on_closer_id", using: :btree
   add_index "issues", ["owner_id"], name: "index_issues_on_owner_id", using: :btree
+
+  create_table "issues_users", id: false, force: :cascade do |t|
+    t.integer "issue_id", null: false
+    t.integer "user_id",  null: false
+  end
+
+  add_index "issues_users", ["issue_id"], name: "index_issues_users_on_issue_id", using: :btree
+  add_index "issues_users", ["user_id"], name: "index_issues_users_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false

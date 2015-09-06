@@ -4,8 +4,11 @@ Rails.application.routes.draw do
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
 
   resources :issues, except: [:index, :show, :destroy] do
-    post :close, on: :member
-    post :acknowledge, on: :member
+    member do
+      post :vote
+      post :acknowledge
+      post :close
+    end
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

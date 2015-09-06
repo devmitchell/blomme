@@ -5,7 +5,6 @@ class CreateIssues < ActiveRecord::Migration
       t.belongs_to :closer, index: true
       t.string :statement
       t.string :priority
-      t.integer :votes, null: false, default: 0
       t.boolean :acknowledged, default: false
       t.boolean :closed, default: false
 

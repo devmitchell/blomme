@@ -21,7 +21,11 @@
         %td= issue.acknowledged
         %td= issue.priority
         %td= issue.owner.andand.email
-        %td= issue.votes
+        %td= issue.voters.count
+        - if user_signed_in? && !current_user.issues_voted_for.include?(issue)
+          %td= link_to 'Vote for Issue', vote_issue_path(issue), method: :post
+        - else
+          %td
 
         - if user_signed_in? && current_user.can_acknowledge_issue?(issue) && !issue.acknowledged?
           %td= link_to 'Acknowledge', acknowledge_issue_path(issue), method: :post
