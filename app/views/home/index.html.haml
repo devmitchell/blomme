@@ -20,7 +20,9 @@
         %td= issue.statement
         %td= issue.acknowledged
         %td= t("activerecord.attribute_values.issue.priority.#{issue.priority}")
-        %td= issue.owner.andand.email
+        %td
+          = image_tag gravatar_url(current_user)
+          = issue.owner.andand.email
         %td= issue.voters.count
         - if user_signed_in? && !current_user.issues_voted_for.include?(issue)
           %td= link_to 'Vote for Issue', vote_issue_path(issue), method: :post
@@ -55,7 +57,9 @@
         %td= issue.statement
         %td= issue.acknowledged
         %td= t("activerecord.attribute_values.issue.priority.#{issue.priority}")
-        %td= issue.closer.andand.email
+        %td
+          = image_tag gravatar_url(current_user)
+          = issue.closer.andand.email
 
 %br
 
